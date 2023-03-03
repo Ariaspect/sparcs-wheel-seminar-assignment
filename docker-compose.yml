@@ -5,13 +5,15 @@ services:
   front:
     image: taxi-front:latest
     ports:
-      - 80:80
+      - "80:80"
     restart: always
     environment:
       - REACT_APP_BACK_URL=      # API 서버가 배포된 URL
       - REACT_APP_S3_URL=        # S3 버킷의 URL
   back:
     image: taxi-back:latest
+    ports:
+      - "80:80"
     restart: always
     environment:
       - SESSION_KEY=             # 세션 키
@@ -24,5 +26,9 @@ services:
       - DB_PATH=                 # MongoDB URL
   db:
     image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: passpass
   nginx:
     image: nginx:latest

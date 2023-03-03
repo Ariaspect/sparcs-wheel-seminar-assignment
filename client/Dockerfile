@@ -9,4 +9,4 @@ COPY . .
 RUN npm install && npm run build
 
 EXPOSE 80
-CMD serve -s build
+CMD serve -s build - l 80
