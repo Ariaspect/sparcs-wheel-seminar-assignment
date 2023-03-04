@@ -3,32 +3,58 @@
 
 services:
   front:
+    container_name: taxi-front
     image: taxi-front:latest
-    ports:
-      - "80:80"
+    # ports:
+    #   - "3000:80"
+    networks:
+      - backend
     restart: always
     environment:
-      - REACT_APP_BACK_URL=      # API 서버가 배포된 URL
+      - REACT_APP_BACK_URL=http://back
       - REACT_APP_S3_URL=        # S3 버킷의 URL
   back:
+    container_name: taxi-back
     image: taxi-back:latest
-    ports:
-      - "80:80"
+    # ports:
+    #   - "9000:80"
+    networks:
+      - backend
     restart: always
     environment:
       - SESSION_KEY=             # 세션 키
       - SPARCSSSO_CLIENT_ID=     # SPARCS SSO 클라이언트 ID (선택)
       - SPARCSSSO_CLIENT_KEY=    # SPARCS SSO 클라이언트 키 (선택)
-      - FRONT_URL=               # 클라이언트가 배포된 URL
+      - FRONT_URL=http://front
       - AWS_ACCESS_KEY_ID=       # AWS Access Key ID
       - AWS_SECRET_ACCESS_KEY=   # AWS Secret Access Key
       - AWS_S3_BUCKET_NAME=      # AWS S3 버킷 이름
-      - DB_PATH=                 # MongoDB URL
+      - DB_PATH=mongodb://db:27017
   db:
+    container_name: taxi-db
     image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - backend
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: passpass
   nginx:
+    container_name: taxi-nginx
     image: nginx:latest
+    ports:
+      - "80:80"
+    networks:
+      - backend
+    restart: always
+    depends_on:
+      - front
+      - back
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+networks:
+  backend:
+    driver: bridge

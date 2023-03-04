@@ -6,7 +6,9 @@ FROM node:16-alpine
 WORKDIR /app
 COPY . .
 
-RUN npm install && npm run build
+RUN npm install && \ 
+    npm install serve -g && \
+    npm run build
 
 EXPOSE 80
-CMD serve -s build - l 80
+CMD ["serve", "-s", "build", "-l", "80"]
