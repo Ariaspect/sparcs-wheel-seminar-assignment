@@ -10,11 +10,7 @@ RUN npm install && \
     npm install react-inject-env@2.1.0 --save && \
     npm install serve@14.1.2 -g
 
-ENV REACT_APP_BACK_URL=http://13.125.235.54/api \
-    REACT_APP_S3_URL=https://wheel-seminar-s3-bucket.s3.ap-northeast-2.amazonaws.com
-
 RUN npm run build
 
 EXPOSE 80
-CMD ["echo", "env set $REACT_APP_BACK_URL"]
-CMD ["sh", "-c", "REACT_APP_BACK_URL=http://13.125.235.54/api REACT_APP_S3_URL=https://wheel-seminar-s3-bucket.s3.ap-northeast-2.amazonaws.com npx react-inject-env set && serve -s build -l 80"]
+CMD ["sh", "-c", "npx react-inject-env set && serve -s build -l 80"]
