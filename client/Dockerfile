@@ -6,9 +6,11 @@ FROM node:16-alpine
 WORKDIR /app
 COPY . .
 
-RUN npm install && \ 
-    npm install serve -g && \
-    npm run build
+RUN npm install && \
+    npm install react-inject-env@2.1.0 --save && \
+    npm install serve@14.1.2 -g
+
+RUN npm run build
 
 EXPOSE 80
-CMD ["serve", "-s", "build", "-l", "80"]
+CMD ["sh", "-c", "npx react-inject-env set && serve -s build -l 80"]
