@@ -32,10 +32,10 @@ jobs:
         with:
           context: ./client
           push: true
-          tags: ariaspect/taxi-front:latest
+          tags: ghcr.io/ariaspect/taxi-front:latest
       - name: Build and push Back
         uses: docker/build-push-action@v4
         with:
           context: ./server
           push: true
-          tags: ariaspect/taxi-back:latest
+          tags: ghcr.io/ariaspect/taxi-back:latest
