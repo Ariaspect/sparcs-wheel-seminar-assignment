@@ -5,7 +5,7 @@ name: Publish Docker image
 
 on:
   push:
-    branches: ['release']
+    branches: ['main']
 
 env:
   REGISTRY: ghcr.io
@@ -32,10 +32,10 @@ jobs:
         with:
           context: ./client
           push: true
-          tags: taxi-front:latest
+          tags: Ariaspect/taxi-front:latest
       - name: Build and push Back
         uses: docker/build-and-push-action@v4
         with:
           context: ./server
           push: true
-          tags: taxi-back:latest
+          tags: Ariaspect/taxi-back:latest
